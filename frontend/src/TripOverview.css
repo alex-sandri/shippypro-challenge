@@ -1,0 +1,28 @@
+.TripOverview {
+  color: black;
+  background-color: white;
+
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.TripOverview h3,
+.TripOverview h4 {
+  margin: 0;
+}
+
+.TripOverview .summary-item {
+  font-size: small;
+  text-transform: uppercase;
+}
+
+.flight {
+  margin: 0.5rem 0;
+  padding-left: 0.5rem;
+  border-left: 0.2rem solid black;
+}
+
+.flight p {
+  margin: 0;
+  margin-bottom: 0.2rem;
+}

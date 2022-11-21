@@ -1,0 +1,9 @@
+.SelectAirport {
+  font-size: x-small;
+  text-transform: uppercase;
+}
+
+.SelectAirport select {
+  display: block;
+  margin-top: 0.2rem;
+}
