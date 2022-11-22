@@ -27,7 +27,8 @@ function App() {
     if (airports === null) {
       fetch('http://localhost:80')
         .then((response) => response.json())
-        .then(setAirports);
+        .then(setAirports)
+        .catch(() => alert('could not fetch airports'));
     }
   });
 
@@ -38,11 +39,16 @@ function App() {
 
     setIsLoadingTrip(true);
 
-    const response = await fetch(`http://localhost:80?from=${departureAirport}&to=${arrivalAirport}`);
-    const json = await response.json();
+    try {
+      const response = await fetch(`http://localhost:80?from=${departureAirport}&to=${arrivalAirport}`);
+      const json = await response.json();
 
-    setTrip(json);
-    setIsLoadingTrip(false);
+      setTrip(json);
+    } catch {
+      alert('could not fetch flights')
+    } finally {
+      setIsLoadingTrip(false);
+    }
   };
 
   return (
