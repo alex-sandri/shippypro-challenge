@@ -46,34 +46,36 @@ class Trip implements JsonSerializable {
 /**
  * List all available flights.
  */
-function list_fligths(): array {
-  return [
-    new Flight(code_departure: 'MXP', code_arrival: 'VCE', price: 10000),
-    new Flight(code_departure: 'VCE', code_arrival: 'MXP', price: 10000),
-    new Flight(code_departure: 'MXP', code_arrival: 'LAX', price: 65000),
-    new Flight(code_departure: 'LAX', code_arrival: 'JFK', price: 30000),
-    new Flight(code_departure: 'JFK', code_arrival: 'VCE', price: 48000),
-    new Flight(code_departure: 'ORD', code_arrival: 'FRA', price: 40000),
-    new Flight(code_departure: 'VCE', code_arrival: 'FRA', price: 10500),
-    new Flight(code_departure: 'CDG', code_arrival: 'MXP', price: 13000),
-    new Flight(code_departure: 'MXP', code_arrival: 'CDG', price: 15000),
-    new Flight(code_departure: 'CDG', code_arrival: 'FRA', price: 12000),
-    new Flight(code_departure: 'FRA', code_arrival: 'JFK', price: 52000),
-    new Flight(code_departure: 'FRA', code_arrival: 'CDG', price: 12500),
-    new Flight(code_departure: 'FRA', code_arrival: 'SIN', price: 85000),
-    new Flight(code_departure: 'SIN', code_arrival: 'LAX', price: 63000),
-    new Flight(code_departure: 'LAX', code_arrival: 'ORD', price: 22000),
-  ];
+function list_fligths($connection): array {
+  $result = pg_query($connection, 'select * from "flight"');
+
+  if (!$result) {
+    exit('could not retrieve flights');
+  }
+
+  $flights = [];
+
+  while ($row = pg_fetch_assoc($result)) {
+    $flights[] = new Flight(
+      code_departure: $row['code_departure'],
+      code_arrival: $row['code_arrival'],
+      price: $row['price'],
+    );
+  }
+
+  pg_free_result($result);
+
+  return $flights;
 }
 
 /**
  * Find all trips that start at `$from` and end at `$to` with at most 2
  * stopovers.
  */
-function find_trips(string $from, string $to): array {
+function find_trips($connection, string $from, string $to): array {
   $trips = array_merge(
-    find_direct_trips($from, $to),
-    find_indirect_trips($from, $to),
+    find_direct_trips($connection, $from, $to),
+    find_indirect_trips($connection, $from, $to),
   );
 
   return $trips;
@@ -82,10 +84,10 @@ function find_trips(string $from, string $to): array {
 /**
  * Find all trips that connect `$from` and `$to` directly.
  */
-function find_direct_trips(string $from, string $to): array {
+function find_direct_trips($connection, string $from, string $to): array {
   $flights = array_values(
     array_filter(
-      list_fligths(),
+      list_fligths($connection),
       fn(Flight $flight) =>
         $flight->code_departure === $from && $flight->code_arrival === $to,
     ),
@@ -101,10 +103,10 @@ function find_direct_trips(string $from, string $to): array {
  * Find all trips that connect `$from` and `$to` with at most 2
  * stopovers.
  */
-function find_indirect_trips(string $from, string $to): array {
+function find_indirect_trips($connection, string $from, string $to): array {
   $trips = [];
 
-  $flights = list_fligths();
+  $flights = list_fligths($connection);
 
   // Find all flights that would depart from the desired airport
   $possibleDepartures = array_values(
@@ -155,8 +157,8 @@ function find_indirect_trips(string $from, string $to): array {
     for ($i = 0; $i < count($possibleConnectingFlights); $i++) {
       $connectingFlight = $possibleConnectingFlights[$i];
 
-      $possibleDepartureTrips = find_direct_trips($from, $connectingFlight->code_departure);
-      $possibleArrivalTrips = find_direct_trips($connectingFlight->code_arrival, $to);
+      $possibleDepartureTrips = find_direct_trips($connection, $from, $connectingFlight->code_departure);
+      $possibleArrivalTrips = find_direct_trips($connection, $connectingFlight->code_arrival, $to);
 
       if (empty($possibleDepartureTrips) || empty($possibleArrivalTrips)) {
         continue;
@@ -169,8 +171,10 @@ function find_indirect_trips(string $from, string $to): array {
 
           // Skip useless flights.
           //
-          // Example: MXP -> VCE, VCE -> MXP, MXP -> VCE
-          if ($departure->__toString() === $arrival->__toString()) {
+          // Examples:
+          // - MXP -> VCE, VCE -> MXP, MXP -> VCE
+          // - MXP -> CDG, CDG -> MXP, MXP -> FRA
+          if ($departure->code_departure === $arrival->code_departure) {
             continue;
           }
 
