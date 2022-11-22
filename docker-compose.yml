@@ -8,3 +8,15 @@ services:
       - 80:80
     volumes:
       - ./backend/:/var/www/html/
+
+  db:
+    container_name: db
+    image: postgres:15.1
+    environment:
+      POSTGRES_PASSWORD: password
+
+  adminer:
+    container_name: adminer
+    image: adminer:latest
+    ports:
+      - 8080:8080
