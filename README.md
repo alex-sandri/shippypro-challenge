@@ -38,3 +38,23 @@ The setup should have been completed successfully.
 2. Run `npm i` to install the required dependencies
 3. Run `npm run dev` to start serving the app locally
 4. Go to `localhost:8000` from your browser
+
+### Search flights
+
+1. Select a departure airport from the `FROM` select element
+2. Select an arrival airport from the `TO` select element
+3. Click on `Find`
+
+## Screenshots
+
+### Initial page
+
+![Initial](./assets/initial.png)
+
+### Trip overview
+
+![Initial](./assets/trip-overview.png)
+
+### No flights found
+
+![Initial](./assets/no-flights.png)
