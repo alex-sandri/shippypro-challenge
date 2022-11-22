@@ -1,14 +1,33 @@
 # ShippyPro challenge
 
-> I assumed no database is required as the challenge requires a ***PHP*** algorithm
-> and as such a database would be superfluous in my opinion.
+## Requirements
+
+- `Docker`
+- `npm`
 
 ## Setup
 
-Run `docker compose up` to create and start the backend's container.
+Run `docker compose up` to create and start the necessary containers.
 
-I decided to use Docker as it should ensure that, when you run this backend
-service, no issue arises.
+> I decided to use Docker as it facilitates the creation and reproduction
+> of the development environment.
+
+### Create and seed database
+
+1. Go to `localhost:8080` to access `adminer`
+2. Enter this values:
+  - `System`: `PostgreSQL`
+  - `Server`: `db`
+  - `Username`: `postgres`
+  - `Password`: `password`
+3. Click on `Create database`
+4. Enter `shippypro` into the text field
+5. Click on `Save`
+6. Click on `SQL command`
+7. Copy and paste the contents of [`db.sql`](./backend/db.sql) into the text field
+8. Click on `Execute`
+
+The setup should have been completed successfully.
 
 ## Use the app
 
