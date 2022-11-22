@@ -16,10 +16,10 @@ Run `docker compose up` to create and start the necessary containers.
 
 1. Go to `localhost:8080` to access `adminer`
 2. Enter this values:
-  - `System`: `PostgreSQL`
-  - `Server`: `db`
-  - `Username`: `postgres`
-  - `Password`: `password`
+    - `System`: `PostgreSQL`
+    - `Server`: `db`
+    - `Username`: `postgres`
+    - `Password`: `password`
 3. Click on `Create database`
 4. Enter `shippypro` into the text field
 5. Click on `Save`
