@@ -22,12 +22,13 @@ Run `docker compose up` to create and start the necessary containers.
     - `Server`: `db`
     - `Username`: `postgres`
     - `Password`: `password`
-3. Click on `Create database`
-4. Enter `shippypro` into the text field
-5. Click on `Save`
-6. Click on `SQL command`
-7. Copy and paste the contents of [`db.sql`](./backend/db.sql) into the text field
-8. Click on `Execute`
+3. Click on `Login`
+4. Click on `Create database`
+5. Enter `shippypro` into the text field
+6. Click on `Save`
+7. Click on `SQL command`
+8. Copy and paste the contents of [`db.sql`](./backend/db.sql) into the text field
+9. Click on `Execute`
 
 The setup should have been completed successfully.
 
