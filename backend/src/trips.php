@@ -73,6 +73,10 @@ function list_fligths($connection): array {
  * stopovers.
  */
 function find_trips($connection, string $from, string $to): array {
+  if ($from === $to) {
+    return [];
+  }
+
   $trips = array_merge(
     find_direct_trips($connection, $from, $to),
     find_indirect_trips($connection, $from, $to),
