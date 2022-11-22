@@ -1,5 +1,7 @@
 # ShippyPro challenge
 
+See [`challenge.pdf`](./challenge.pdf) for the description of the challenge.
+
 ## Requirements
 
 - `Docker`
@@ -12,7 +14,7 @@ Run `docker compose up` to create and start the necessary containers.
 > I decided to use Docker as it facilitates the creation and reproduction
 > of the development environment.
 
-### Create and seed database
+### Create and seed the database
 
 1. Go to `localhost:8080` to access `adminer`
 2. Enter this values:
