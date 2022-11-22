@@ -3,6 +3,7 @@ import './SelectAirport.css';
 interface Props {
   label: string;
   airports: Airport[];
+  disabledAirport?: string | null;
   onChange: (airport: Airport) => void;
 }
 
@@ -30,7 +31,9 @@ function SelectAirport(props: Props) {
           <option value='null' disabled>Select airport</option>
           {
             props.airports.map((airport) => {
-              return <option key={airport.id} value={airport.code}>
+              const isDisabled = props.disabledAirport === airport.code;
+
+              return <option key={airport.id} value={airport.code} disabled={isDisabled}>
                 {airport.name}
               </option>;
             })

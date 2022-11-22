@@ -63,11 +63,13 @@ function App() {
               <SelectAirport
                 label='From'
                 airports={airports}
+                disabledAirport={arrivalAirport}
                 onChange={({ code }) => setDepartureAirport(code)}
               />
               <SelectAirport
                 label='To'
                 airports={airports}
+                disabledAirport={departureAirport}
                 onChange={({ code }) => setArrivalAirport(code)}
               />
               <button onClick={findTrip}>Find</button>
